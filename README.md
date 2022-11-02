@@ -1,46 +1,29 @@
-# Getting Started with Create React App
+Tech Challenge for Frequenz - REFERENCE: KFA95ZAS4AZ482G7
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## To Run
 
-## Available Scripts
+Use command `yarn start`. This will install dependencies and run the app in `localhost:3000`. \
+A browser window should open automatically.
 
-In the project directory, you can run:
+## Packages
 
-### `npm start`
+### Create React App
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Just a super simple way to get started, so I bootstrapped using this.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Material-UI
 
-### `npm test`
+Feature rich, themeable UI library. I chose this as I have used it in the past so I am familiar, it's fairly feature complete, and stable.
+It is also built on emotion, so it is easy to extend to custom styling where appropriate.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Other Decisions
 
-### `npm run build`
+### Box component vs styled `div`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+MUI provides a [Box Component](http://www.google.com), which is essentially a `div` which provides styling through props. \
+You might notice I opt for using a styled `div` instead. There are two reasons for this. \
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. It removes noise from the markup by not including a bunch of props that can be in a style file.
+2. It allows me to show how easy styling is using emotion. This can also be used to display updating styles easily if requested.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+In general I would actually use a mix. Box is nice if you have a couple of positioning or sizing styles to define, but as mentioned, they can pollute the markup if using too many, in which case I would opt for a styled `div` instead.
