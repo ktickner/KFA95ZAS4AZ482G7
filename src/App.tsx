@@ -1,25 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
+
+import { AppBar } from "./components/AppBar";
+import { ContentContainer } from "./components/ContentContainer";
+
+import { SearchOrganisationPage } from "./pages/SearchOrganisation";
+import { NoResultsPage } from "./pages/NoResults";
+
+const theme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+});
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <main>
+        <AppBar>
+          <Autocomplete
+            disablePortal
+            options={[]}
+            renderInput={(params) => (
+              <TextField {...params} label="Organisation" />
+            )}
+          />
+        </AppBar>
+        <ContentContainer>
+          {/* <SearchOrganisationPage /> */}
+          <NoResultsPage />
+        </ContentContainer>
+      </main>
+    </ThemeProvider>
   );
 }
 

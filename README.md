@@ -27,3 +27,8 @@ You might notice I opt for using a styled `div` instead. There are two reasons f
 2. It allows me to show how easy styling is using emotion. This can also be used to display updating styles easily if requested.
 
 In general I would actually use a mix. Box is nice if you have a couple of positioning or sizing styles to define, but as mentioned, they can pollute the markup if using too many, in which case I would opt for a styled `div` instead.
+
+### Pages Directory
+
+The components in the `pages` directory aren't really pages, so much as page states. \
+I decided to call it pages to illustrate a `normal` directory structure (although there are many ways to do this), and for simplicity's sake.
