@@ -1,5 +1,7 @@
 import Typography from "@mui/material/Typography";
 
+import { MessageBox } from "../MessageBox";
+
 import * as S from "./ErrorMessage.styles";
 
 interface OrgAutocompleteErrorMessageProps {
@@ -11,7 +13,7 @@ const OrgAutocompleteErrorMessage: React.FC<
   OrgAutocompleteErrorMessageProps
 > = ({ error, onRetryClick }) => {
   return (
-    <S.Container>
+    <MessageBox>
       <Typography variant="h3">😱</Typography>
       {error.code >= 500 ? (
         <Typography>
@@ -41,7 +43,7 @@ const OrgAutocompleteErrorMessage: React.FC<
           .
         </Typography>
       )}
-    </S.Container>
+    </MessageBox>
   );
 };
 

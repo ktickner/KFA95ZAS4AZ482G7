@@ -20,7 +20,9 @@ function App() {
       <CssBaseline />
       <main>
         <AppBar>
-          <OrgAutocomplete />
+          <OrgAutocomplete
+            onOrganizationSelect={(value) => console.log(value)}
+          />
         </AppBar>
         <ContentContainer>
           <SearchOrganisationPage />

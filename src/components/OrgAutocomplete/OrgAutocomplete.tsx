@@ -5,13 +5,29 @@ import Autocomplete from "@mui/material/Autocomplete";
 import debounce from "lodash/debounce";
 
 import { OrgAutocompleteErrorMessage } from "./components/ErrorMessage";
+import { OrgAutocompleteLoadingMessage } from "./components/LoadingMessage";
+import { OrgAutocompleteNoOptionsMessage } from "./components/NoOptionsMessage";
+import { OrgAutocompleteNoSearchMessage } from "./components/NoSearchMessage";
 
-const OrgAutocomplete: React.FC = () => {
+interface OrgAutocompleteProps extends React.PropsWithChildren {
+  onOrganizationSelect: (value: OctokitUserData | null) => void;
+}
+
+// Apparently the Octokit types are not great, and I can't find documentation about a
+// `User` or `Organization` type
+interface OctokitUserData {
+  login: string;
+  id: number;
+}
+
+const OrgAutocomplete: React.FC<OrgAutocompleteProps> = ({
+  onOrganizationSelect,
+}) => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const [error, setError] = React.useState<any>(new Error("theres an error"));
-  const [value, setValue] = React.useState<string>("");
+  const [error, setError] = React.useState<any>(null);
+  const [value, setValue] = React.useState<OctokitUserData | null>(null);
   const [inputValue, setInputValue] = React.useState<string>("");
-  const [options, setOptions] = React.useState<string[]>([]);
+  const [options, setOptions] = React.useState<OctokitUserData[]>([]);
   const octokit = React.useRef(
     new Octokit({
       auth: process.env.REACT_APP_GH_PAT,
@@ -22,13 +38,11 @@ const OrgAutocomplete: React.FC = () => {
     () =>
       debounce(async (input: string) => {
         try {
-          setIsLoading(true);
-
           const orgs = await octokit.current.request("GET /search/users", {
             q: `type:org ${input} in:name`,
           });
 
-          setOptions(orgs.data?.items.map((a) => a.login) || []);
+          setOptions(orgs.data?.items);
           setIsLoading(false);
         } catch (error: any) {
           // This should report to error logs like Bugsnag for example
@@ -46,8 +60,10 @@ const OrgAutocomplete: React.FC = () => {
 
   React.useEffect(() => {
     if (!inputValue) {
-      setValue("");
+      setValue(null);
       setOptions([]);
+
+      setIsLoading(false);
 
       return;
     }
@@ -62,18 +78,25 @@ const OrgAutocomplete: React.FC = () => {
       options={options}
       value={value}
       renderInput={(params) => <TextField {...params} label="Organisation" />}
+      getOptionLabel={(option) => option.login}
       onInputChange={(_, newInputValue) => {
+        setIsLoading(true);
         setInputValue(newInputValue);
       }}
       onChange={(_, newValue) => {
         setOptions(newValue ? [newValue, ...options] : options);
-        setValue(newValue || "");
+        setValue(newValue || null);
+
+        onOrganizationSelect(newValue || null);
       }}
+      loadingText={<OrgAutocompleteLoadingMessage />}
       noOptionsText={
         error ? (
           <OrgAutocompleteErrorMessage error={error} onRetryClick={() => {}} />
+        ) : inputValue ? (
+          <OrgAutocompleteNoOptionsMessage />
         ) : (
-          "No options"
+          <OrgAutocompleteNoSearchMessage />
         )
       }
     />
