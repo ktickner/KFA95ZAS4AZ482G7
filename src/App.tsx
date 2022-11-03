@@ -1,11 +1,9 @@
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
-
 import { AppBar } from "./components/AppBar";
 import { ContentContainer } from "./components/ContentContainer";
+import { OrgAutocomplete } from "./components/OrgAutocomplete";
 
 import { SearchOrganisationPage } from "./pages/SearchOrganisation";
 import { NoResultsPage } from "./pages/NoResults";
@@ -22,17 +20,11 @@ function App() {
       <CssBaseline />
       <main>
         <AppBar>
-          <Autocomplete
-            disablePortal
-            options={[]}
-            renderInput={(params) => (
-              <TextField {...params} label="Organisation" />
-            )}
-          />
+          <OrgAutocomplete />
         </AppBar>
         <ContentContainer>
-          {/* <SearchOrganisationPage /> */}
-          <NoResultsPage />
+          <SearchOrganisationPage />
+          {/* <NoResultsPage /> */}
         </ContentContainer>
       </main>
     </ThemeProvider>
