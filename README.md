@@ -2,6 +2,9 @@ Tech Challenge for Frequenz - REFERENCE: KFA95ZAS4AZ482G7
 
 ## To Run
 
+Copy the `.env.example` file and rename to `.env`. \
+Fill in with your GitHub Personal Access Token (env variable `GH_PAT`). Instructions to create a key are [here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
+
 Use command `yarn start`. This will install dependencies and run the app in `localhost:3000`. \
 A browser window should open automatically.
 
