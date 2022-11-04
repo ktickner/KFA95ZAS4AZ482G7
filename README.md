@@ -1,5 +1,7 @@
 Tech Challenge for Frequenz - REFERENCE: KFA95ZAS4AZ482G7
 
+- Note on commit messages
+
 ## To Run
 
 Copy the `.env.example` file and rename to `.env`. \
@@ -35,3 +37,13 @@ In general I would actually use a mix. Box is nice if you have a couple of posit
 
 The components in the `pages` directory aren't really pages, so much as page states. \
 I decided to call it pages to illustrate a `normal` directory structure (although there are many ways to do this), and for simplicity's sake.
+
+## Challenges
+
+### Tendonitis
+
+## Future Improvement
+
+### Routing
+
+### Autocomplete Infinite Scroll / Pagination

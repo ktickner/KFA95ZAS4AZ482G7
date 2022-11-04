@@ -60,8 +60,8 @@ const OrgAutocomplete: React.FC<OrgAutocompleteProps> = ({
 
   React.useEffect(() => {
     if (!inputValue) {
-      setValue(null);
-      setOptions([]);
+      //   setValue(null);
+      setOptions(value ? [value] : []);
 
       setIsLoading(false);
 
@@ -69,7 +69,7 @@ const OrgAutocomplete: React.FC<OrgAutocompleteProps> = ({
     }
 
     fetchOptions(inputValue);
-  }, [inputValue, fetchOptions]);
+  }, [inputValue, fetchOptions, value]);
 
   return (
     <Autocomplete

@@ -1,3 +1,4 @@
+import * as React from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 
@@ -7,6 +8,7 @@ import { OrgAutocomplete } from "./components/OrgAutocomplete";
 
 import { SearchOrganisationPage } from "./pages/SearchOrganisation";
 import { NoResultsPage } from "./pages/NoResults";
+import { RepositoriesListPage } from "./pages/RepositoriesList";
 
 const theme = createTheme({
   palette: {
@@ -15,18 +17,27 @@ const theme = createTheme({
 });
 
 function App() {
+  const [selectedOrganization, setSelectedOrganization] = React.useState<
+    string | null
+  >(null);
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <main>
         <AppBar>
           <OrgAutocomplete
-            onOrganizationSelect={(value) => console.log(value)}
+            onOrganizationSelect={(value) =>
+              setSelectedOrganization(value?.login || null)
+            }
           />
         </AppBar>
         <ContentContainer>
-          <SearchOrganisationPage />
-          {/* <NoResultsPage /> */}
+          {/* <NoResultsPage />   This state should be in the repolist */}
+          {selectedOrganization ? (
+            <RepositoriesListPage orgName={selectedOrganization} />
+          ) : (
+            <SearchOrganisationPage />
+          )}
         </ContentContainer>
       </main>
     </ThemeProvider>
