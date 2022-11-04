@@ -47,3 +47,9 @@ I decided to call it pages to illustrate a `normal` directory structure (althoug
 ### Routing
 
 ### Autocomplete Infinite Scroll / Pagination
+
+### State Management
+
+Adding state management such as context or redux at this scale would only serve to introduce complexity. However, in the case where we are using multiple page routes, etc. it would make sense to introduce something to handle state on an app wide level.
+
+### Path Aliases

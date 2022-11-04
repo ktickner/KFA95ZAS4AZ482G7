@@ -7,7 +7,7 @@ const RepositoriesTableRow: React.FC<RepositoriesTableRowProps> = ({
   repo,
 }) => {
   return (
-    <TableRow key={repo.id}>
+    <TableRow>
       <TableCell>{repo.name}</TableCell>
       <TableCell>{repo.open_issues_count}</TableCell>
       <TableCell>{repo.stargazers_count}</TableCell>

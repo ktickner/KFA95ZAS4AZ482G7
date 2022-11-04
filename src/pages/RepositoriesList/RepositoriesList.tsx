@@ -1,12 +1,10 @@
 import * as React from "react";
-import { Octokit } from "octokit";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import TablePagination from "@mui/material/TablePagination";
 import Paper from "@mui/material/Paper";
 
 import type {
@@ -15,23 +13,22 @@ import type {
 } from "./RepositoriesList.types";
 
 import { RepositoriesTableRow } from "./components/TableRow";
+import { RepositoriesListTablePagination } from "./components/TablePagination";
+
+import { githubMethods } from "../../data/github";
 
 const RepositoriesListPage: React.FC<RepositoriesListPageProps> = ({
   orgName,
 }) => {
   const [repoList, setRepoList] = React.useState<RepoData[]>([]);
-  const octokit = React.useRef(
-    new Octokit({
-      auth: process.env.REACT_APP_GH_PAT,
-    })
-  );
+  const [linkHeader, setLinkHeader] = React.useState<string | null>(null);
 
   const fetchRepos = React.useCallback(async (name: typeof orgName) => {
-    const repos = await octokit.current.request("GET /orgs/{org}/repos", {
-      org: name,
-    });
+    const repos = await githubMethods.fetchRepos({ orgName: name });
 
     console.log(repos);
+
+    setLinkHeader(repos.headers.link ?? null);
     setRepoList(repos.data as RepoData[]);
   }, []);
 
@@ -52,18 +49,15 @@ const RepositoriesListPage: React.FC<RepositoriesListPageProps> = ({
           </TableHead>
           <TableBody>
             {repoList.map((repo) => (
-              <RepositoriesTableRow repo={repo} />
+              <RepositoriesTableRow key={repo.id} repo={repo} />
             ))}
+            <TableRow>
+              <RepositoriesListTablePagination
+                linkHeader={linkHeader}
+                onPageChange={() => {}}
+              />
+            </TableRow>
           </TableBody>
-          <TablePagination
-            sx={{ width: "100%" }}
-            count={-1}
-            page={0}
-            onPageChange={() => {}}
-            rowsPerPage={-1}
-            labelDisplayedRows={() => ""}
-            rowsPerPageOptions={[{ label: "", value: -1 }]}
-          />
         </Table>
       </TableContainer>
     </Paper>

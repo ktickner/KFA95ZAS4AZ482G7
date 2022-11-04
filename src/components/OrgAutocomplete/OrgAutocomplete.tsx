@@ -1,8 +1,9 @@
 import * as React from "react";
-import { Octokit } from "octokit";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import debounce from "lodash/debounce";
+
+import { githubMethods } from "../../data/github";
 
 import { OrgAutocompleteErrorMessage } from "./components/ErrorMessage";
 import { OrgAutocompleteLoadingMessage } from "./components/LoadingMessage";
@@ -28,19 +29,12 @@ const OrgAutocomplete: React.FC<OrgAutocompleteProps> = ({
   const [value, setValue] = React.useState<OctokitUserData | null>(null);
   const [inputValue, setInputValue] = React.useState<string>("");
   const [options, setOptions] = React.useState<OctokitUserData[]>([]);
-  const octokit = React.useRef(
-    new Octokit({
-      auth: process.env.REACT_APP_GH_PAT,
-    })
-  );
 
   const fetchOptions = React.useMemo(
     () =>
       debounce(async (input: string) => {
         try {
-          const orgs = await octokit.current.request("GET /search/users", {
-            q: `type:org ${input} in:name`,
-          });
+          const orgs = await githubMethods.searchOrgs({ searchString: input });
 
           setOptions(orgs.data?.items);
           setIsLoading(false);
