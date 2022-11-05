@@ -42,6 +42,11 @@ I decided to call it pages to illustrate a `normal` directory structure (althoug
 
 ### Tendonitis
 
+### Pagination
+
+MUI provides a table pagination component, however it doesn't work well with the GitHub API. After spending some time exploring how I can make it work, I had to fall back to their regular pagination component. I should have done this sooner, but I would have preferred to use a more familiar pagination pattern for tabular data. \
+Still, I think the results aren't bad.
+
 ## Future Improvement
 
 ### Routing

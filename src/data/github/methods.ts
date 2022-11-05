@@ -4,6 +4,7 @@ import client from "./client";
 export const fetchRepos = (params: FetchReposParams) => {
   return client.request("GET /orgs/{org}/repos", {
     org: params.orgName,
+    page: params.page,
   });
 };
 

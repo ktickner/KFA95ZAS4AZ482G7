@@ -1,49 +1,46 @@
 import * as React from "react";
-import TablePagination from "@mui/material/TablePagination";
+import Pagination from "@mui/material/Pagination";
+
+import * as utils from "./utils";
 
 interface RepositoriesListTablePaginationProps {
   linkHeader: string | null;
-  onPageChange: () => void;
+  onPageChange: (event: React.ChangeEvent<unknown>, page: number) => void;
+}
+
+interface PageLinkNumbers {
+  next?: string;
+  previous?: string;
+  first?: string;
+  last?: string;
 }
 
 const RepositoriesListTablePagination: React.FC<
   RepositoriesListTablePaginationProps
 > = ({ linkHeader, onPageChange }) => {
-  console.log(linkHeader);
-  const [pageNumber, setPageNumber] = React.useState<number>(0);
+  const [pageLinkNumbers, setPageLinkNumbers] = React.useState<PageLinkNumbers>(
+    {}
+  );
 
   React.useEffect(() => {
     const links = linkHeader?.split(", ");
-    console.log(links);
-    const nextLink = links
-      ?.find((link) => link.includes('rel="next"'))
-      ?.split("<")?.[1]
-      ?.split(">")?.[0]
-      .replace("https://api.github.com", "");
-    const lastLink = links
-      ?.find((link) => link.includes('rel="last"'))
-      ?.split("<")?.[1]
-      ?.split(">")?.[0]
-      .replace("https://api.github.com", "");
+    const last = utils.extractLinkPageNumber("last", links);
+    const first = utils.extractLinkPageNumber("first", links);
+    const previous = utils.extractLinkPageNumber("previous", links);
+    const next = utils.extractLinkPageNumber("next", links);
 
-    console.log(nextLink, lastLink);
+    setPageLinkNumbers({ first, last, previous, next });
   }, [linkHeader]);
 
-  function handlePageChange() {
-    setPageNumber(1);
-
-    onPageChange();
-  }
+  // Avoiding NaN from appearing
+  const pageCount = pageLinkNumbers?.last ? +pageLinkNumbers.last : 1;
 
   return (
-    <TablePagination
-      sx={{ width: "100%" }}
-      count={-1}
-      page={pageNumber}
-      onPageChange={handlePageChange}
-      rowsPerPage={-1}
-      labelDisplayedRows={() => ""}
-      rowsPerPageOptions={[{ label: "", value: -1 }]}
+    <Pagination
+      count={pageCount}
+      onChange={onPageChange}
+      showFirstButton
+      showLastButton
     />
   );
 };
