@@ -12,38 +12,60 @@ import type {
   RepositoriesListPageProps,
   RepoData,
 } from "./RepositoriesList.types";
+import { FilterValuesState } from "./components/Filters/Filters.types";
 
 import { RepositoriesTableRow } from "./components/TableRow";
 import { RepositoriesListTablePagination } from "./components/TablePagination";
+import { Filters } from "./components/Filters";
 
 import { githubMethods } from "../../data/github";
+
+interface FetchReposParams {
+  org: string;
+  page?: number;
+  name?: string;
+  min?: number;
+  max?: number;
+}
 
 const RepositoriesListPage: React.FC<RepositoriesListPageProps> = ({
   orgName,
 }) => {
   const [repoList, setRepoList] = React.useState<RepoData[]>([]);
   const [linkHeader, setLinkHeader] = React.useState<string | null>(null);
+  const [filterValues, setFilterValues] = React.useState<FilterValuesState>({});
 
   const fetchRepos = React.useCallback(
-    async (name: typeof orgName, page: number | undefined = 1) => {
-      const repos = await githubMethods.fetchRepos({ orgName: name, page });
+    async ({ org, page, name, min, max }: FetchReposParams) => {
+      const repos = await githubMethods.searchRepos({
+        org,
+        page,
+        name,
+        min,
+        max,
+      });
 
       setLinkHeader(repos.headers.link ?? null);
-      setRepoList(repos.data as RepoData[]);
+      setRepoList(repos.data.items as RepoData[]);
     },
     []
   );
 
   React.useEffect(() => {
-    fetchRepos(orgName);
-  }, [orgName, fetchRepos]);
+    fetchRepos({ org: orgName, ...filterValues });
+  }, [orgName, fetchRepos, filterValues]);
 
   function handlePageChange(event: React.ChangeEvent<unknown>, page: number) {
-    fetchRepos(orgName, page);
+    fetchRepos({ org: orgName, page, ...filterValues });
+  }
+
+  function handleFiltersChange(newFilters: FilterValuesState) {
+    setFilterValues(newFilters);
   }
 
   return (
     <Stack width="100%" gap={2} alignItems="center">
+      <Filters onFiltersChange={handleFiltersChange} />
       <Paper sx={{ width: "100%", alignSelf: "flex-start" }}>
         <TableContainer>
           <Table>

@@ -58,3 +58,7 @@ Still, I think the results aren't bad.
 Adding state management such as context or redux at this scale would only serve to introduce complexity. However, in the case where we are using multiple page routes, etc. it would make sense to introduce something to handle state on an app wide level.
 
 ### Path Aliases
+
+### Form Handling
+
+Like most things, I felt that proper form handling was not worth the time to implement for the size and lifespan of this project. It would be a very early improvement to implement proper form handling to improve maintainability over a longer period of time.
