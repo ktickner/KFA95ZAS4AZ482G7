@@ -17,6 +17,7 @@ import { FilterValuesState } from "./components/Filters/Filters.types";
 import { RepositoriesTableRow } from "./components/TableRow";
 import { RepositoriesListTablePagination } from "./components/TablePagination";
 import { Filters } from "./components/Filters";
+import { RepositoriesListLoadingMessage } from "./components/LoadingMessage";
 
 import { githubMethods } from "../../data/github";
 
@@ -34,22 +35,18 @@ const RepositoriesListPage: React.FC<RepositoriesListPageProps> = ({
   const [repoList, setRepoList] = React.useState<RepoData[]>([]);
   const [linkHeader, setLinkHeader] = React.useState<string | null>(null);
   const [filterValues, setFilterValues] = React.useState<FilterValuesState>({});
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
-  const fetchRepos = React.useCallback(
-    async ({ org, page, name, min, max }: FetchReposParams) => {
-      const repos = await githubMethods.searchRepos({
-        org,
-        page,
-        name,
-        min,
-        max,
-      });
+  const fetchRepos = React.useCallback(async (params: FetchReposParams) => {
+    setIsLoading(true);
 
-      setLinkHeader(repos.headers.link ?? null);
-      setRepoList(repos.data.items as RepoData[]);
-    },
-    []
-  );
+    const repos = await githubMethods.searchRepos(params);
+
+    setLinkHeader(repos.headers.link ?? null);
+    setRepoList(repos.data.items as RepoData[]);
+
+    // setIsLoading(false);
+  }, []);
 
   React.useEffect(() => {
     fetchRepos({ org: orgName, ...filterValues });
@@ -67,22 +64,26 @@ const RepositoriesListPage: React.FC<RepositoriesListPageProps> = ({
     <Stack width="100%" gap={2} alignItems="center">
       <Filters onFiltersChange={handleFiltersChange} />
       <Paper sx={{ width: "100%", alignSelf: "flex-start" }}>
-        <TableContainer>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell>Issues</TableCell>
-                <TableCell>Stars</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {repoList.map((repo) => (
-                <RepositoriesTableRow key={repo.id} repo={repo} />
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        {isLoading ? (
+          <RepositoriesListLoadingMessage />
+        ) : (
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Name</TableCell>
+                  <TableCell>Issues</TableCell>
+                  <TableCell>Stars</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {repoList.map((repo) => (
+                  <RepositoriesTableRow key={repo.id} repo={repo} />
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
       </Paper>
       <RepositoriesListTablePagination
         linkHeader={linkHeader}

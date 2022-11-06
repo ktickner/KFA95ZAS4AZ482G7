@@ -40,7 +40,7 @@ I decided to call it pages to illustrate a `normal` directory structure (althoug
 
 ## Challenges
 
-### Tendonitis
+### The GitHub API
 
 ### Pagination
 
