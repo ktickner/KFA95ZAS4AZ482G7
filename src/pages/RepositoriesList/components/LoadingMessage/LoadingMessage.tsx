@@ -1,14 +1,14 @@
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 
-import * as S from "./LoadingMessage.styles";
+import { MessageBox } from "../MessageBox";
 
 const RepositoriesListLoadingMessage: React.FC = () => {
   return (
-    <S.Container>
+    <MessageBox>
       <CircularProgress />
       <Typography>Loading repositories...</Typography>
-    </S.Container>
+    </MessageBox>
   );
 };
 

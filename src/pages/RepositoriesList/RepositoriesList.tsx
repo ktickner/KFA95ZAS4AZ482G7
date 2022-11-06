@@ -18,6 +18,7 @@ import { RepositoriesTableRow } from "./components/TableRow";
 import { RepositoriesListTablePagination } from "./components/TablePagination";
 import { Filters } from "./components/Filters";
 import { RepositoriesListLoadingMessage } from "./components/LoadingMessage";
+import { RepositoriesListNoResultsMessage } from "./components/NoResultsMessage";
 
 import { githubMethods } from "../../data/github";
 
@@ -35,7 +36,7 @@ const RepositoriesListPage: React.FC<RepositoriesListPageProps> = ({
   const [repoList, setRepoList] = React.useState<RepoData[]>([]);
   const [linkHeader, setLinkHeader] = React.useState<string | null>(null);
   const [filterValues, setFilterValues] = React.useState<FilterValuesState>({});
-  const [isLoading, setIsLoading] = React.useState<boolean>(true);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   const fetchRepos = React.useCallback(async (params: FetchReposParams) => {
     setIsLoading(true);
@@ -45,7 +46,7 @@ const RepositoriesListPage: React.FC<RepositoriesListPageProps> = ({
     setLinkHeader(repos.headers.link ?? null);
     setRepoList(repos.data.items as RepoData[]);
 
-    // setIsLoading(false);
+    setIsLoading(false);
   }, []);
 
   React.useEffect(() => {
@@ -66,6 +67,8 @@ const RepositoriesListPage: React.FC<RepositoriesListPageProps> = ({
       <Paper sx={{ width: "100%", alignSelf: "flex-start" }}>
         {isLoading ? (
           <RepositoriesListLoadingMessage />
+        ) : repoList.length === 0 ? (
+          <RepositoriesListNoResultsMessage />
         ) : (
           <TableContainer>
             <Table>

@@ -7,7 +7,6 @@ import { ContentContainer } from "./components/ContentContainer";
 import { OrgAutocomplete } from "./components/OrgAutocomplete";
 
 import { SearchOrganisationPage } from "./pages/SearchOrganisation";
-import { NoResultsPage } from "./pages/NoResults";
 import { RepositoriesListPage } from "./pages/RepositoriesList";
 
 const theme = createTheme({
@@ -32,7 +31,6 @@ function App() {
           />
         </AppBar>
         <ContentContainer>
-          {/* <NoResultsPage />   This state should be in the repolist */}
           {selectedOrganization ? (
             <RepositoriesListPage orgName={selectedOrganization} />
           ) : (

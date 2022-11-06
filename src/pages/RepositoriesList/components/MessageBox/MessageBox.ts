@@ -1,7 +1,7 @@
 import { styled } from "@mui/system";
 
-export const Container = styled("div")`
-  width: 100%;
+const MessageBox = styled("div")`
+  flex: 1;
   padding: ${({ theme }) => theme.spacing(10)};
   display: flex;
   flex-direction: column;
@@ -9,3 +9,5 @@ export const Container = styled("div")`
   align-items: center;
   justify-content: center;
 `;
+
+export default MessageBox;

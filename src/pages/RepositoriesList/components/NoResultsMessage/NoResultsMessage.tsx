@@ -1,10 +1,12 @@
 import Typography from "@mui/material/Typography";
 
-import * as S from "./NoResults.styles";
+import { MessageBox } from "../MessageBox";
 
-const NoResultsPage: React.FC = () => {
+import * as S from "./NoResultsMessage.styles";
+
+const RepositoriesListNoResultsMessage: React.FC = () => {
   return (
-    <S.Container>
+    <MessageBox>
       <Typography variant="h1">😶</Typography>
       <S.TextContainer>
         <Typography variant="h3" textAlign="center">
@@ -14,8 +16,8 @@ const NoResultsPage: React.FC = () => {
           Weird, but okay. Try searching for another (better) organisation.
         </Typography>
       </S.TextContainer>
-    </S.Container>
+    </MessageBox>
   );
 };
 
-export default NoResultsPage;
+export default RepositoriesListNoResultsMessage;
