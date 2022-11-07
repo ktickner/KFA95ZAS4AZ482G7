@@ -19,6 +19,7 @@ import { RepositoriesListTablePagination } from "./components/TablePagination";
 import { Filters } from "./components/Filters";
 import { RepositoriesListLoadingMessage } from "./components/LoadingMessage";
 import { RepositoriesListNoResultsMessage } from "./components/NoResultsMessage";
+import { RepositoriesListErrorMessage } from "./components/ErrorMessage";
 
 import { githubMethods } from "../../data/github";
 
@@ -36,29 +37,59 @@ const RepositoriesListPage: React.FC<RepositoriesListPageProps> = ({
   const [repoList, setRepoList] = React.useState<RepoData[]>([]);
   const [linkHeader, setLinkHeader] = React.useState<string | null>(null);
   const [filterValues, setFilterValues] = React.useState<FilterValuesState>({});
+  const [currentPage, setCurrentPage] = React.useState<number>(1);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  // Type is any because the octokit client eats the real errors and exposes something else
+  const [error, setError] = React.useState<any>(null);
+
+  // Using a ref as this is designed just to track when the organization changes
+  const currentOrgName = React.useRef<string>(orgName);
 
   const fetchRepos = React.useCallback(async (params: FetchReposParams) => {
     setIsLoading(true);
+    setError(null);
 
-    const repos = await githubMethods.searchRepos(params);
+    try {
+      const repos = await githubMethods.searchRepos(params);
 
-    setLinkHeader(repos.headers.link ?? null);
-    setRepoList(repos.data.items as RepoData[]);
+      setLinkHeader(repos.headers.link ?? null);
+      setRepoList(repos.data.items as RepoData[]);
+      setIsLoading(false);
+    } catch (error: any) {
+      // This should report to error logs like Bugsnag for example
+      console.error(error);
 
-    setIsLoading(false);
+      setLinkHeader(null);
+      setRepoList([]);
+      setError(error);
+      setIsLoading(false);
+
+      return;
+    }
   }, []);
 
   React.useEffect(() => {
-    fetchRepos({ org: orgName, ...filterValues });
-  }, [orgName, fetchRepos, filterValues]);
+    if (orgName !== currentOrgName.current) {
+      // We just want to reset the page when the organization changes, as the current page might not exist
+      // I can't decide if creating a context to manage the API state is more or less complex at this scale
+      currentOrgName.current = orgName;
+      setCurrentPage(1);
+    }
+
+    fetchRepos({ org: orgName, page: currentPage, ...filterValues });
+  }, [orgName, fetchRepos, filterValues, currentPage]);
 
   function handlePageChange(event: React.ChangeEvent<unknown>, page: number) {
-    fetchRepos({ org: orgName, page, ...filterValues });
+    setCurrentPage(page);
   }
 
   function handleFiltersChange(newFilters: FilterValuesState) {
+    setCurrentPage(1);
     setFilterValues(newFilters);
+  }
+
+  function handleRetry() {
+    fetchRepos({ org: orgName, page: currentPage, ...filterValues });
   }
 
   return (
@@ -67,6 +98,11 @@ const RepositoriesListPage: React.FC<RepositoriesListPageProps> = ({
       <Paper sx={{ width: "100%", alignSelf: "flex-start" }}>
         {isLoading ? (
           <RepositoriesListLoadingMessage />
+        ) : error ? (
+          <RepositoriesListErrorMessage
+            error={error}
+            onRetryClick={handleRetry}
+          />
         ) : repoList.length === 0 ? (
           <RepositoriesListNoResultsMessage />
         ) : (

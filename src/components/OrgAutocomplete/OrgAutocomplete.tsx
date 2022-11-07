@@ -25,7 +25,7 @@ const OrgAutocomplete: React.FC<OrgAutocompleteProps> = ({
   onOrganizationSelect,
 }) => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const [error, setError] = React.useState<any>(null);
+  const [error, setError] = React.useState<any>(new Error("lol"));
   const [value, setValue] = React.useState<OctokitUserData | null>(null);
   const [inputValue, setInputValue] = React.useState<string>("");
   const [options, setOptions] = React.useState<OctokitUserData[]>([]);
@@ -54,7 +54,6 @@ const OrgAutocomplete: React.FC<OrgAutocompleteProps> = ({
 
   React.useEffect(() => {
     if (!inputValue) {
-      //   setValue(null);
       setOptions(value ? [value] : []);
 
       setIsLoading(false);
@@ -64,6 +63,13 @@ const OrgAutocomplete: React.FC<OrgAutocompleteProps> = ({
 
     fetchOptions(inputValue);
   }, [inputValue, fetchOptions, value]);
+
+  function handleRetry() {
+    setIsLoading(true);
+    setError(null);
+
+    fetchOptions(inputValue);
+  }
 
   return (
     <Autocomplete
@@ -75,6 +81,8 @@ const OrgAutocomplete: React.FC<OrgAutocompleteProps> = ({
       getOptionLabel={(option) => option.login}
       onInputChange={(_, newInputValue) => {
         setIsLoading(true);
+        setError(null);
+
         setInputValue(newInputValue);
       }}
       onChange={(_, newValue) => {
@@ -86,7 +94,10 @@ const OrgAutocomplete: React.FC<OrgAutocompleteProps> = ({
       loadingText={<OrgAutocompleteLoadingMessage />}
       noOptionsText={
         error ? (
-          <OrgAutocompleteErrorMessage error={error} onRetryClick={() => {}} />
+          <OrgAutocompleteErrorMessage
+            error={error}
+            onRetryClick={handleRetry}
+          />
         ) : inputValue ? (
           <OrgAutocompleteNoOptionsMessage />
         ) : (

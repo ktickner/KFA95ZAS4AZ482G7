@@ -40,7 +40,14 @@ I decided to call it pages to illustrate a `normal` directory structure (althoug
 
 ## Challenges
 
+### Organization vs Organisation
+
+U.S. English is killing me :/
+
 ### The GitHub API
+
+**Special Mention: Error handling** /
+Using the octokit client provides a lot of functionality out of the box. However, it appears that it swallows regular errors thrown by the API (or the client), and exposes what -it- thinks you need. This has made handling network errors in particular more difficult that it should be. Typing the errors correctly was also made impossible by this.
 
 ### Pagination
 
