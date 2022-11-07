@@ -3,17 +3,10 @@ import Pagination from "@mui/material/Pagination";
 
 import * as utils from "./utils";
 
-interface RepositoriesListTablePaginationProps {
-  linkHeader: string | null;
-  onPageChange: (event: React.ChangeEvent<unknown>, page: number) => void;
-}
-
-interface PageLinkNumbers {
-  next?: string;
-  previous?: string;
-  first?: string;
-  last?: string;
-}
+import type {
+  RepositoriesListTablePaginationProps,
+  PageLinkNumbers,
+} from "./TablePagination.types";
 
 const RepositoriesListTablePagination: React.FC<
   RepositoriesListTablePaginationProps

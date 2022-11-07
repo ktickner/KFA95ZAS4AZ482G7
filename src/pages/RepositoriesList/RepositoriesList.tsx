@@ -11,6 +11,7 @@ import Stack from "@mui/material/Stack";
 import type {
   RepositoriesListPageProps,
   RepoData,
+  FetchReposParams,
 } from "./RepositoriesList.types";
 import { FilterValuesState } from "./components/Filters/Filters.types";
 
@@ -22,14 +23,6 @@ import { RepositoriesListNoResultsMessage } from "./components/NoResultsMessage"
 import { RepositoriesListErrorMessage } from "./components/ErrorMessage";
 
 import { githubMethods } from "../../data/github";
-
-interface FetchReposParams {
-  org: string;
-  page?: number;
-  name?: string;
-  min?: number;
-  max?: number;
-}
 
 const RepositoriesListPage: React.FC<RepositoriesListPageProps> = ({
   orgName,

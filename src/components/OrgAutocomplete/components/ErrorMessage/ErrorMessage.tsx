@@ -4,10 +4,7 @@ import { MessageBox } from "../MessageBox";
 
 import * as S from "./ErrorMessage.styles";
 
-interface OrgAutocompleteErrorMessageProps {
-  error: any;
-  onRetryClick: () => void;
-}
+import type { OrgAutocompleteErrorMessageProps } from "./ErrorMessage.types";
 
 const OrgAutocompleteErrorMessage: React.FC<
   OrgAutocompleteErrorMessageProps

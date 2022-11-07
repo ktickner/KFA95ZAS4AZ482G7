@@ -1,5 +1,7 @@
+import type { LinkType } from "./TablePagination.types";
+
 export const extractLinkPageNumber = (
-  linkType: "previous" | "next" | "first" | "last",
+  linkType: LinkType,
   links?: string[]
 ): string | undefined => {
   return links

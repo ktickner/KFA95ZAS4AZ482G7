@@ -4,10 +4,7 @@ import { MessageBox } from "../MessageBox";
 
 import * as S from "./ErrorMessage.styles";
 
-interface RepositoriesListErrorMessageProps {
-  error: any;
-  onRetryClick: () => void;
-}
+import type { RepositoriesListErrorMessageProps } from "./ErrorMessage.types";
 
 const RepositoriesListErrorMessage: React.FC<
   RepositoriesListErrorMessageProps

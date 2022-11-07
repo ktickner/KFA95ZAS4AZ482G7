@@ -19,6 +19,7 @@ function App() {
   const [selectedOrganization, setSelectedOrganization] = React.useState<
     string | null
   >(null);
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />

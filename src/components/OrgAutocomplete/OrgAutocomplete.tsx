@@ -10,16 +10,10 @@ import { OrgAutocompleteLoadingMessage } from "./components/LoadingMessage";
 import { OrgAutocompleteNoOptionsMessage } from "./components/NoOptionsMessage";
 import { OrgAutocompleteNoSearchMessage } from "./components/NoSearchMessage";
 
-interface OrgAutocompleteProps extends React.PropsWithChildren {
-  onOrganizationSelect: (value: OctokitUserData | null) => void;
-}
-
-// Apparently the Octokit types are not great, and I can't find documentation about a
-// `User` or `Organization` type
-interface OctokitUserData {
-  login: string;
-  id: number;
-}
+import type {
+  OrgAutocompleteProps,
+  OctokitUserData,
+} from "./OrgAutocomplete.types";
 
 const OrgAutocomplete: React.FC<OrgAutocompleteProps> = ({
   onOrganizationSelect,

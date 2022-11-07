@@ -12,3 +12,11 @@ export interface RepoData {
   open_issues_count: number;
   stargazers_count: number;
 }
+
+export interface FetchReposParams {
+  org: string;
+  page?: number;
+  name?: string;
+  min?: number;
+  max?: number;
+}
