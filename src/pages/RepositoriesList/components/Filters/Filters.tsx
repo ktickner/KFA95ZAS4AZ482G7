@@ -80,7 +80,7 @@ const Filters: React.FC<FiltersProps> = ({ onFiltersChange }) => {
         error={!isValid.name}
         helperText={filterErrors.name}
       />
-      <Typography>Open Issues:</Typography>
+      <Typography>Stars:</Typography>
       <TextField
         label="Minimum"
         type="number"
